@@ -113,6 +113,8 @@ livenessProbe:
 | ALLOWED_ORIGINS  | "['*']"  | array of domains, e.g ['https://a.com'] |
 | VALID_SIZES  | Any size  | array of integers allowed in the h= and w= parameters, e.g "[100,200,300]". You should set this to protect against being bombarded with requests! |
 | NAME_STRATEGY  | "randomstr"  | `randomstr` for random 5 chars, `uuidv4` for UUIDv4 |
+| BASIC_AUTH_USER  | ""  | Put your HTTP AUTH username here |
+| BASIC_AUTH_PASS  | ""  | Put your HTTP AUTH password here|
 
 Setting configuration variables is all set through env variables that get passed to the docker container.
 ### Example:
