@@ -14,11 +14,14 @@ from flask_limiter.util import get_remote_address
 from wand.exceptions import MissingDelegateError
 from wand.image import Image
 from werkzeug.middleware.proxy_fix import ProxyFix
+from flask_httpauth import HTTPBasicAuth
+from werkzeug.security import generate_password_hash, check_password_hash
 
 import settings
 
 app = Flask(__name__)
 app.wsgi_app = ProxyFix(app.wsgi_app)
+auth = HTTPBasicAuth()
 
 CORS(app, origins=settings.ALLOWED_ORIGINS)
 app.config["MAX_CONTENT_LENGTH"] = settings.MAX_SIZE_MB * 1024 * 1024
@@ -26,6 +29,15 @@ limiter = Limiter(app, key_func=get_remote_address, default_limits=[])
 
 app.use_x_sendfile = True
 
+users = {
+    settings.BASIC_AUTH_USER: generate_password_hash(settings.BASIC_AUTH_PASS)
+}
+
+@auth.verify_password
+def verify_password(username, password):
+    if username in users and \
+            check_password_hash(users.get(username), password):
+        return username
 
 @app.after_request
 def after_request(resp):
@@ -138,6 +150,7 @@ def liveness():
 
 
 @app.route("/", methods=["POST"])
+@auth.login_required
 @limiter.limit(
     "".join(
         [
