@@ -12,6 +12,9 @@ MAX_TMP_FILE_AGE = 5 * 60
 
 VALID_SIZES = []
 
+BASIC_AUTH_USER = ""
+BASIC_AUTH_PASS = ""
+
 MAX_SIZE_MB = 16
 
 for variable in [item for item in globals() if not item.startswith("__")]:
