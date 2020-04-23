@@ -7,7 +7,8 @@ Minimalist Self-hosted Image Service for user submitted images in your app (e.g.
 - Automatic resizing to any size of your liking
 - Built-in Rate limiting
 - Built-in Allowed Origin whitelisting
-- Liveness API 
+- Liveness API
+- Protected POST route with basic HTTP auth (NEW)
 
 ## Usage
 Uploading an image:
