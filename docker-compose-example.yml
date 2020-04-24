@@ -1,22 +1,25 @@
-version: '3.5'
+version: '2.1'
 services:
   imgpush:
-    ports:
-        - "5000:5000"
-    build: .
-    volumes:
-      - ./app:/app
-      - ./images:/images
-      - ./cache:/cache
+    container_name: imgpush
+    restart: always
     environment:
       - MAX_SIZE_MB=10
       - MAX_UPLOADS_PER_DAY=1000
       - MAX_UPLOADS_PER_HOUR=50
       - MAX_UPLOADS_PER_MINUTE=10
       - VALID_SIZES=[800,500,100,50,20]
-      - NAME_STRATEGY="uuidv4"
-      - BASIC_AUTH_USER="XXXXXXX"
-      - BASIC_AUTH_PASS= "XXXXXXX"
+      - NAME_STRATEGY=uuidv4
+      - BASIC_AUTH_USER=xxxxx
+      - BASIC_AUTH_PASS=xxxxx
+    build: .
+    volumes:
+      - ./app:/app
+      - ./images:/images
+      - ./cache:/cache
+    ports:
+      - '5000:5000'
     healthcheck:
       test: ['CMD-SHELL', 'curl localhost:5000/liveness -s -f -o /dev/null || exit 1']
       interval: 30s
+    mem_limit: 400M
