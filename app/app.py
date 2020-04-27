@@ -199,6 +199,19 @@ def upload_image():
 
     return jsonify(filename=output_filename)
 
+@app.route("/<string:filename>", methods=["DELETE"])
+@auth.login_required
+@limiter.exempt
+def get_del_image(filename):
+    del_path = os.path.join(settings.IMAGES_DIR, filename)
+    try:
+        os.remove(del_path)
+    except OSError:
+        return (
+            jsonify(error=f"unable to remove {filename}"),
+            400,
+        )
+    return jsonify(filename=filename)
 
 @app.route("/<string:filename>")
 @limiter.exempt
