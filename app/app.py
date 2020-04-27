@@ -16,6 +16,7 @@ from wand.image import Image
 from werkzeug.middleware.proxy_fix import ProxyFix
 from flask_httpauth import HTTPBasicAuth
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_autoindex import AutoIndex
 
 import settings
 
@@ -147,6 +148,15 @@ def root():
 @app.route("/liveness", methods=["GET"])
 def liveness():
     return Response(status=200)
+
+
+files_index = AutoIndex(app, settings.IMAGES_DIR, add_url_rules=False)
+
+@app.route("/files", methods=["GET"])
+@app.route("/files/<path:path>")
+@auth.login_required
+def autoindex(path='.'):
+    return files_index.render_autoindex(path)
 
 
 @app.route("/", methods=["POST"])
