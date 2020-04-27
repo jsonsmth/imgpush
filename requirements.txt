@@ -6,3 +6,5 @@ wand==0.5.7
 Werkzeug==0.16.0
 gunicorn==19.9.0
 Flask-HTTPAuth
+Flask-AutoIndex==0.6.4
+Flask-Silk==0.2
